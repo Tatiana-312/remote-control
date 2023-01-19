@@ -5,6 +5,7 @@ export const drawRectangle = async (value: number[]) => {
     const height = value[1];
     await mouse.pressButton(Button.LEFT);
 
+    mouse.config.mouseSpeed = 800;
     await mouse.move(right(width));
     await mouse.move(down(height));
     await mouse.move(left(width));

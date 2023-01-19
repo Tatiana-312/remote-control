@@ -28,7 +28,7 @@ wss.on('connection', (ws) => {
                 ws.send(`${command} ${coordinates.x},${coordinates.y}`);
                 break;
             case 'draw_circle':
-                // drawCircle(value);
+                drawCircle(value);
                 ws.send(`${command}_${value}`);
                 break;
             case 'draw_rectangle':

@@ -4,6 +4,7 @@ export const drawSquare = async (value: number[]) => {
     const sideLength = value[0];
     await mouse.pressButton(Button.LEFT);
 
+    mouse.config.mouseSpeed = 800;
     await mouse.move(right(sideLength));
     await mouse.move(down(sideLength));
     await mouse.move(left(sideLength));
