@@ -15,5 +15,5 @@ export const navigation = async (command: string, value: number[]) => {
         case 'mouse_down':
             await mouse.move(down(amountOfPx));
             break;
-    }
-}
+    };
+};

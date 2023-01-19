@@ -6,6 +6,5 @@ export const getCommand = (stringData: string): string => {
     } else {
         command = stringData.slice(0, stringData.indexOf(' '));
     }
-
     return command.trim();
-}
+};

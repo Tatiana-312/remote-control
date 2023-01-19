@@ -1,6 +1,6 @@
 import { httpServer } from "./src/http_server/index";
 import { RawData, WebSocketServer } from 'ws';
-import { mouse, Button, right, down, left, up } from "@nut-tree/nut-js";
+import { mouse } from "@nut-tree/nut-js";
 import { getValue } from "./src/utils/getValue";
 import { getCommand } from "./src/utils/getCommand";
 import { navigation } from "./src/navigation/navigation";
@@ -56,4 +56,4 @@ process.on('SIGINT', () => {
     wss.close();
     console.log('Service closed');
     process.exit();
- })
+});
