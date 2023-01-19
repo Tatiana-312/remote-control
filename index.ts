@@ -1,6 +1,9 @@
 import { httpServer } from "./src/http_server/index";
 import { RawData, WebSocketServer } from 'ws';
-import { mouse } from "@nut-tree/nut-js";
+import { mouse, MouseClass, right, left, up, down } from "@nut-tree/nut-js";
+import { getValue } from "./src/utils/getValue";
+import { getCommand } from "./src/utils/getCommand";
+import { moveCursor } from "./src/navigation/moveCursor";
 
 const HTTP_PORT = 8181;
 
@@ -14,9 +17,13 @@ process.on('SIGINT', () => {
 const wss = new WebSocketServer({ port: 8080 });
 
 wss.on('connection', (ws) => {
-    ws.on('message', (data: RawData) => {
-      console.log('received: %s', data);
+    ws.on('message', async (data: RawData) => {
+        const stringData: string = data.toString();
+        const value = getValue(stringData);
+        const command = getCommand(stringData);
 
-      ws.send(data.toString());
+        moveCursor(command, value);
+
+        ws.send(stringData);
     });
 });
