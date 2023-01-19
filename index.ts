@@ -3,7 +3,7 @@ import { RawData, WebSocketServer } from 'ws';
 import { mouse, MouseClass, right, left, up, down } from "@nut-tree/nut-js";
 import { getValue } from "./src/utils/getValue";
 import { getCommand } from "./src/utils/getCommand";
-import { moveCursor } from "./src/navigation/moveCursor";
+import { navigation } from "./src/navigation/navigation";
 
 const HTTP_PORT = 8181;
 
@@ -19,11 +19,16 @@ const wss = new WebSocketServer({ port: 8080 });
 wss.on('connection', (ws) => {
     ws.on('message', async (data: RawData) => {
         const stringData: string = data.toString();
+        console.log(stringData);
         const value = getValue(stringData);
         const command = getCommand(stringData);
 
-        moveCursor(command, value);
-
-        ws.send(stringData);
+        if (command === 'mouse_position') {
+            const p = await mouse.getPosition();
+            ws.send(`${command} ${p.x},${p.y}`)
+        } else {
+            await navigation(command, value);
+            ws.send(`${command}_${value}`);
+        }
     });
 });

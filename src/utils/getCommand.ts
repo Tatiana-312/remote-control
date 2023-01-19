@@ -1,4 +1,11 @@
 export const getCommand = (stringData: string): string => {
-    const command: string = stringData.slice(stringData.indexOf('_') + 1, stringData.indexOf(' '));
-    return command;
+    let command: string;
+
+    if (stringData.split(' ').length === 1) {
+        command = stringData;
+    } else {
+        command = stringData.slice(0, stringData.indexOf(' '));
+    }
+
+    return command.trim();
 }
