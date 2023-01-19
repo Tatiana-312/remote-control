@@ -6,6 +6,7 @@ import { getCommand } from "./src/utils/getCommand";
 import { navigation } from "./src/navigation/navigation";
 import { drawCircle } from "./src/drawing/drawCircle";
 import { drawSquare } from "./src/drawing/drawSquare";
+import { drawRectangle } from "./src/drawing/drawRectangle";
 
 const HTTP_PORT = 8181;
 
@@ -17,8 +18,8 @@ const wss = new WebSocketServer({ port: 8080 });
 wss.on('connection', (ws) => {
     ws.on('message', async (data: RawData) => {
         const stringData: string = data.toString();
-        console.log(stringData);
-        const value: number = getValue(stringData);
+        // console.log(stringData);
+        const value = getValue(stringData);
         const command = getCommand(stringData);
 
         switch (command) {
@@ -31,7 +32,7 @@ wss.on('connection', (ws) => {
                 ws.send(`${command}_${value}`);
                 break;
             case 'draw_rectangle':
-                // drawRectangle(value);
+                drawRectangle(value);
                 ws.send(`${command}_${value}`);
                 break;
             case 'draw_square':
