@@ -1,13 +1,9 @@
 import { httpServer } from "./src/http_server/index";
 import { RawData, WebSocketServer } from 'ws';
-import { mouse } from "@nut-tree/nut-js";
+import WebSocket from 'ws';
 import { getValue } from "./src/utils/getValue";
 import { getCommand } from "./src/utils/getCommand";
-import { navigation } from "./src/navigation/navigation";
-import { drawCircle } from "./src/drawing/drawCircle";
-import { drawSquare } from "./src/drawing/drawSquare";
-import { drawRectangle } from "./src/drawing/drawRectangle";
-import { printScreen } from "./src/printScreen/printScreen";
+import { app } from "./app";
 
 const HTTP_PORT = 8181;
 
@@ -17,41 +13,14 @@ httpServer.listen(HTTP_PORT);
 const wss = new WebSocketServer({ port: 8080 });
 console.log(`Start WebSocket server on the 8080 port!`);
 
-wss.on('connection', (ws) => {
-    ws.on('message', async (data: RawData) => {
+wss.on('connection', (ws: WebSocket.WebSocket): void => {
+    ws.on('message', async (data: RawData): Promise<void> => {
         const stringData: string = data.toString();
-        console.log(`Command: ${stringData}`);
-        const value = getValue(stringData);
-        const command = getCommand(stringData);
+        const value: number[] = getValue(stringData);
+        const command: string = getCommand(stringData);
 
-        switch (command) {
-            case 'mouse_position':
-                const coordinates = await mouse.getPosition();
-                const result = `${command} ${coordinates.x},${coordinates.y}`
-                console.log(`Result: ${result}`);
-                ws.send(result);
-                break;
-            case 'draw_circle':
-                drawCircle(value);
-                ws.send(`${command}_${value}`);
-                break;
-            case 'draw_rectangle':
-                drawRectangle(value);
-                ws.send(`${command}_${value}`);
-                break;
-            case 'draw_square':
-                await drawSquare(value);
-                ws.send(`${command}_${value}`);
-                break;
-            case 'prnt_scrn':
-                const base64 = await printScreen(command);
-                ws.send(`${command} ${base64}`);
-                break;
-            default :
-                await navigation(command, value);
-                ws.send(`${command}_${value}`);
-                break;
-        }
+        console.log(`Command: ${stringData}`);
+        await app(ws, command, value);
     });
 });
 

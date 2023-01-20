@@ -1,7 +1,8 @@
 import { mouse, Button, down, left, right, up } from "@nut-tree/nut-js";
 
-export const drawSquare = async (value: number[]) => {
-    const sideLength = value[0];
+export const drawSquare = async (value: number[]): Promise<void> => {
+    const sideLength: number = value[0];
+    
     await mouse.pressButton(Button.LEFT);
 
     mouse.config.mouseSpeed = 800;

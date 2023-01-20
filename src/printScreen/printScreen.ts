@@ -1,14 +1,14 @@
 import Jimp from 'jimp';
-import { mouse, screen, Region } from "@nut-tree/nut-js";
+import { mouse, screen, Region, Point, Image } from "@nut-tree/nut-js";
 
 export const printScreen = async (command: string) => {
     try {
-        const size = 200;
-        const coordinates = await mouse.getPosition();
-        const region = new Region(coordinates.x, coordinates.y, size, size)
+        const size: number = 200;
+        const coordinates: Point = await mouse.getPosition();
+        const region: Region = new Region(coordinates.x, coordinates.y, size, size)
         await screen.highlight(region)
-        const img = await screen.grabRegion(region);
-        const imgRGB = await img.toRGB();
+        const img: Image = await screen.grabRegion(region);
+        const imgRGB: Image = await img.toRGB();
     
         const jimp = new Jimp({
             data: imgRGB.data,
@@ -16,8 +16,8 @@ export const printScreen = async (command: string) => {
             height: imgRGB.height,
         });
     
-        const base64Image = await jimp.getBase64Async(Jimp.MIME_PNG);
-        const base64 = base64Image.split(',')[1];
+        const base64Image: string = await jimp.getBase64Async(Jimp.MIME_PNG);
+        const base64: string = base64Image.split(',')[1];
     
         console.log(`Result: ${command} ${base64.slice(0, 300)}...`)
     

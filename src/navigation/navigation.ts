@@ -1,7 +1,7 @@
 import {mouse, down, left, right, up } from "@nut-tree/nut-js";
 
-export const navigation = async (command: string, value: number[]) => {
-    const amountOfPx = value[0];
+export const navigation = async (command: string, value: number[]): Promise<void> => {
+    const amountOfPx: number = value[0];
     switch (command) {
         case 'mouse_left':
             await mouse.move(left(amountOfPx));
