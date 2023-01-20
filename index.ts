@@ -20,7 +20,7 @@ console.log(`Start WebSocket server on the 8080 port!`);
 wss.on('connection', (ws) => {
     ws.on('message', async (data: RawData) => {
         const stringData: string = data.toString();
-        console.log(stringData);
+        console.log(`Command: ${stringData}`);
         const value = getValue(stringData);
         const command = getCommand(stringData);
 
@@ -28,7 +28,7 @@ wss.on('connection', (ws) => {
             case 'mouse_position':
                 const coordinates = await mouse.getPosition();
                 const result = `${command} ${coordinates.x},${coordinates.y}`
-                console.log(result);
+                console.log('\x1b[32m%s\x1b[0m', `Result: ${result}`);
                 ws.send(result);
                 break;
             case 'draw_circle':
@@ -44,7 +44,7 @@ wss.on('connection', (ws) => {
                 ws.send(`${command}_${value}`);
                 break;
             case 'prnt_scrn':
-                const base64 = await printScreen();
+                const base64 = await printScreen(command);
                 ws.send(`${command} ${base64}`);
                 break;
             default :
