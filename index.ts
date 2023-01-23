@@ -25,12 +25,12 @@ wss.on('connection', (ws: WebSocket.WebSocket): void => {
 });
 
 wss.on('close', () => {
-    console.log('Service closed');
-});
+    console.log('Websocket server closed!')
+  });
 
-process.on('SIGINT', () => { 
-    httpServer.close(() => process.exit());
+process.on('SIGINT', () => {
+    console.log('Websocket server closed!');
     wss.close();
-    console.log('Service closed');
-    process.exit();
+    httpServer.close();
+    process.exit(0);
 });
