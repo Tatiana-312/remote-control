@@ -1,7 +1,8 @@
 import { mouse, Button, Point } from "@nut-tree/nut-js";
 
 export const drawCircle = async (value: number[]): Promise<void> => {
-    const radius: number = value[0];
+    try {
+        const radius: number = value[0];
     const point: Point = await mouse.getPosition();
     const x0: number = point.x;
     const y0: number = point.y;
@@ -17,4 +18,7 @@ export const drawCircle = async (value: number[]): Promise<void> => {
         }
 
     await mouse.releaseButton(Button.LEFT);
+    } catch (err) {
+        console.error("\x1b[31m%s\x1b[0m", "Result: Error! Please, don't leave the main screen!");
+    }
 };
